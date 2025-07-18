@@ -16,15 +16,18 @@
       color: yellow;
       display: flex;
       align-items: center;
-      padding: 1rem;
-      justify-content: space-between;
+      padding: 1rem 2rem;
+      justify-content: center;
+      gap: 1rem;
     }
     header img {
       height: 60px;
+      width: auto;
     }
     header h1 {
       margin: 0;
       font-size: 2rem;
+      font-weight: 600;
     }
     .section {
       padding: 2rem;
@@ -35,6 +38,7 @@
       color: #000;
       border-bottom: 2px solid yellow;
       padding-bottom: 0.5rem;
+      font-weight: 600;
     }
     .services ul, .products ul {
       list-style: none;
@@ -83,6 +87,8 @@
       background: #eee;
     }
   </style>
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <header>
@@ -90,46 +96,32 @@
     <h1>The Stringer</h1>
   </header>
 
+  <!-- Editable Services Section -->
   <div class="section services">
     <h2>My Services</h2>
-    <ul>
-      <li>Squash racquet restringing – from R220</li>
-      <li>Tennis racquet restringing – from R250</li>
-      <li>Racquetball racquet restringing – from R240</li>
-      <li>Racquet frame repairs – from R260 excluding stringing</li>
-    </ul>
+    {% raw %}{{ services }}{% endraw %}
   </div>
 
+  <!-- Editable Products Section -->
   <div class="section products">
     <h2>Products</h2>
-    <ul>
-      <li>
-        <img src="squash-racquet.jpg" alt="Squash Racquet" />
-        New squash racquets – from R950
-      </li>
-      <li>
-        <img src="tennis-racquet.jpg" alt="Tennis Racquet" />
-        New tennis racquets – On request
-      </li>
-      <li>
-        <img src="grips-accessories.jpg" alt="Grips and Accessories" />
-        Grips, balls, and accessories – contact for prices
-      </li>
-    </ul>
-    <p style="font-size: 0.9rem; color: #555;">* To change photos, replace the images in this folder with the same filenames or update the <code>&lt;img src="..."&gt;</code> line.</p>
+    {% raw %}{{ products }}{% endraw %}
   </div>
 
+  <!-- Editable Gallery Section -->
   <div class="section">
     <h2>Gallery</h2>
     <div class="gallery">
-      <img src="gallery1.jpg" alt="Gallery Image 1" />
-      <img src="gallery2.jpg" alt="Gallery Image 2" />
-      <img src="gallery3.jpg" alt="Gallery Image 3" />
-      <!-- Add or remove <img> lines as needed -->
+      {% raw %}{% for image in gallery %}{% endraw %}
+        <img src="{% raw %}{{ image }}{% endraw %}" alt="Gallery image">
+      {% raw %}{% endfor %}{% endraw %}
     </div>
-    <p style="font-size: 0.9rem; color: #555;">* To update the gallery, replace or add images in the same folder and update filenames.</p>
+    <p style="font-size: 0.9rem; color: #555;">
+      * To update the gallery, use the admin panel.
+    </p>
   </div>
 
+  <!-- Static Contact Section -->
   <div class="contact">
     <h2>Contact Us</h2>
     <p>For bookings, quotes or questions:</p>
@@ -143,5 +135,21 @@
   <footer>
     &copy; 2025 The Stringer. All rights reserved.
   </footer>
+
+  <!-- Netlify CMS Script -->
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  
+  <!-- Netlify Identity Redirect -->
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
 </body>
 </html>
