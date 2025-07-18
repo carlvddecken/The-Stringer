@@ -2,20 +2,19 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/img/uploads"  # Stores uploaded images
-public_folder: "/img/uploads"      # Public path for images
+media_folder: "static/img/uploads"
+public_folder: "/img/uploads"
 
 collections:
-  - name: "content"
-    label: "Content"
+  - name: "pages"
+    label: "Pages"
     files:
       - file: "index.html"
         label: "Home Page"
         fields:
-          - { name: "title", label: "Page Title", widget: "string", default: "The Stringer" }
-          - { name: "services", label: "Services List", widget: "markdown", 
-              default: "- Squash restringing – R220\n- Tennis restringing – R250" }
-          - { name: "products", label: "Products List", widget: "markdown",
-              default: "- New squash racquets – R950\n- Grips & accessories – R120" }
-          - { name: "gallery", label: "Gallery Images", widget: "list", 
+          - { name: "services", label: "Services", widget: "markdown",
+              default: "<ul><li>Squash racquet restringing – from R220</li><li>Tennis racquet restringing – from R250</li></ul>" }
+          - { name: "products", label: "Products", widget: "markdown",
+              default: "<ul><li><img src='/img/uploads/squash-racquet.jpg' width='100'> New squash racquets – from R950</li></ul>" }
+          - { name: "gallery", label: "Gallery Images", widget: "list",
               field: { name: "image", label: "Image", widget: "image" } }
