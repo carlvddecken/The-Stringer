@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Stringer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+    header {
+      background-color: #000;
+      color: yellow;
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      justify-content: space-between;
+    }
+    header img {
+      height: 60px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .section {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .section h2 {
+      color: #000;
+      border-bottom: 2px solid yellow;
+      padding-bottom: 0.5rem;
+    }
+    .services ul, .products ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .services li, .products li {
+      margin: 1rem 0;
+      padding: 0.5rem;
+      background: #f0f0f0;
+      border-left: 5px solid yellow;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .products img {
+      width: 100px;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+    .contact {
+      background: #000;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    .contact a {
+      color: yellow;
+      font-size: 1.2rem;
+      text-decoration: none;
+      margin: 0 1rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="./0d8692d9-9840-4f8d-b2a4-93cbbe0934c1.jpg" alt="The Stringer logo">
+    <h1>The Stringer</h1>
+  </header>
+
+  <div class="section services">
+    <h2>My Services</h2>
+    <ul>
+      <li>Squash racquet restringing – from R220</li>
+      <li>Tennis racquet restringing – from R250</li>
+      <li>Racquetball racquet restringing – from R240</li>
+      <li>Racquet frame repairs – from R260 excluding stringing</li>
+    </ul>
+  </div>
+
+  <div class="section products">
+    <h2>Products</h2>
+    <ul>
+      <li>
+        <img src="squash-racquet.jpg" alt="Squash Racquet" />
+        New squash racquets – from R950
+      </li>
+      <li>
+        <img src="tennis-racquet.jpg" alt="Tennis Racquet" />
+        New tennis racquets – On request
+      </li>
+      <li>
+        <img src="grips-accessories.jpg" alt="Grips and Accessories" />
+        Grips, balls, and accessories – contact for prices
+      </li>
+    </ul>
+    <p style="font-size: 0.9rem; color: #555;">* To change photos, replace the images in this folder with the same filenames or update the <code>&lt;img src="..."&gt;</code> line.</p>
+  </div>
+
+  <div class="section">
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <img src="gallery1.jpg" alt="Gallery Image 1" />
+      <img src="gallery2.jpg" alt="Gallery Image 2" />
+      <img src="gallery3.jpg" alt="Gallery Image 3" />
+      <!-- Add or remove <img> lines as needed -->
+    </div>
+    <p style="font-size: 0.9rem; color: #555;">* To update the gallery, replace or add images in the same folder and update filenames.</p>
+  </div>
+
+  <div class="contact">
+    <h2>Contact Us</h2>
+    <p>For bookings, quotes or questions:</p>
+    <p>
+      <a href="https://wa.me/27836175759" target="_blank">WhatsApp: 083 617 5759</a>
+      <br/>
+      <a href="mailto:carl@thestringer.co.za">Email: carl@thestringer.co.za</a>
+    </p>
+  </div>
+
+  <footer>
+    &copy; 2025 The Stringer. All rights reserved.
+  </footer>
+</body>
+</html>
