@@ -1,7 +1,20 @@
 [build]
   publish = "."
+  command = "echo 'No build needed for static site'"
 
+# Required for CMS functionality
+[[plugins]]
+  package = "netlify-plugin-cms"
+  enabled = true
+
+# Redirects
 [[redirects]]
   from = "/admin"
   to = "/admin/"
   status = 301
+
+# Important for CMS previews
+[[redirects]]
+  from = "/img/*"
+  to = "/static/img/:splat"
+  status = 200
