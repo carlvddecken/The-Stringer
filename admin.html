@@ -99,7 +99,33 @@
   </footer>
 
   <script>
-    // [Keep your existing JavaScript]
-  </script>
-</body>
-</html>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Load saved data
+    const savedData = localStorage.getItem('theStringerAdminData');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        document.getElementById('services-edit').value = data.services || '';
+        document.getElementById('products-edit').value = data.products || '';
+        console.log("Loaded saved data:", data); // Debug log
+      } catch (e) {
+        console.error("Error loading data:", e);
+      }
+    }
+
+    // 2. Save data
+    document.querySelector('.admin-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const data = {
+        services: document.getElementById('services-edit').value,
+        products: document.getElementById('products-edit').value,
+        timestamp: new Date().toISOString()
+      };
+      
+      localStorage.setItem('theStringerAdminData', JSON.stringify(data));
+      console.log("Saved data:", data); // Debug log
+      alert('Changes saved successfully!');
+    });
+  });
+</script>
