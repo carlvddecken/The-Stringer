@@ -5,6 +5,9 @@ backend:
 media_folder: "static/img/uploads"
 public_folder: "/img/uploads"
 
+# Enable editorial workflow for draft management (optional)
+# publish_mode: editorial_workflow
+
 collections:
   - name: "pages"
     label: "Pages"
@@ -12,9 +15,25 @@ collections:
       - file: "index.html"
         label: "Home Page"
         fields:
-          - { name: "services", label: "Services", widget: "markdown",
-              default: "<ul><li>Squash racquet restringing – from R220</li><li>Tennis racquet restringing – from R250</li></ul>" }
-          - { name: "products", label: "Products", widget: "markdown",
-              default: "<ul><li><img src='/img/uploads/squash-racquet.jpg' width='100'> New squash racquets – from R950</li></ul>" }
-          - { name: "gallery", label: "Gallery Images", widget: "list",
-              field: { name: "image", label: "Image", widget: "image" } }
+          - { name: "services", 
+              label: "Services", 
+              widget: "markdown",
+              default: "<ul><li>Squash racquet restringing – from R220</li><li>Tennis racquet restringing – from R250</li></ul>",
+              buttons: ["bold", "italic", "link", "bulleted-list"] }
+              
+          - { name: "products", 
+              label: "Products", 
+              widget: "markdown",
+              default: "<ul><li><img src='/img/uploads/squash-racquet.jpg' width='100' alt='Squash racquet'> New squash racquets – from R950</li></ul>",
+              buttons: ["bold", "italic", "link", "image", "bulleted-list"] }
+              
+          - { name: "gallery", 
+              label: "Gallery Images", 
+              widget: "list",
+              field: { 
+                name: "image", 
+                label: "Image", 
+                widget: "image",
+                allow_multiple: false,
+                choose_url: false
+              } }
