@@ -5,10 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin - The Stringer</title>
   <style>
-    /* [PASTE ALL CSS FROM YOUR index.html HERE] */
-    body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #fff; color: #333; }
-    header { background-color: #000; color: yellow; display: flex; align-items: center; padding: 1rem; justify-content: space-between; }
-    /* Include ALL other styles from your index.html */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+    header {
+      background-color: #000;
+      color: yellow;
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      justify-content: space-between;
+    }
+    header img {
+      height: 60px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .section {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .section h2 {
+      color: #000;
+      border-bottom: 2px solid yellow;
+      padding-bottom: 0.5rem;
+    }
+    .services ul, .products ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .services li, .products li {
+      margin: 1rem 0;
+      padding: 0.5rem;
+      background: #f0f0f0;
+      border-left: 5px solid yellow;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .products img {
+      width: 100px;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+    .contact {
+      background: #000;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    .contact a {
+      color: yellow;
+      font-size: 1.2rem;
+      text-decoration: none;
+      margin: 0 1rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eee;
+    }
   </style>
 </head>
 <body>
