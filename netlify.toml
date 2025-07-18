@@ -1,20 +1,39 @@
 [build]
   publish = "."
-  command = "echo 'No build needed for static site'"
+  command = "echo 'Building static site with CMS...' && exit 0"
 
-# Required for CMS functionality
+# Required CMS processing
 [[plugins]]
   package = "netlify-plugin-cms"
   enabled = true
+
+# CMS-specific build settings
+[context.production.environment]
+  NETLIFY_CMS_PREVIEW_STYLES = "true"
+  NETLIFY_CMS_BACKEND = "git-gateway"
 
 # Redirects
 [[redirects]]
   from = "/admin"
   to = "/admin/"
   status = 301
+  force = true
 
-# Important for CMS previews
 [[redirects]]
   from = "/img/*"
   to = "/static/img/:splat"
   status = 200
+
+# Critical for template processing
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Preview URL handling
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
