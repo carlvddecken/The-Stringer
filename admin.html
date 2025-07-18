@@ -18,17 +18,17 @@
       display: flex;
       align-items: center;
       padding: 1rem 2rem;
-      justify-content: center; /* Fix 1: Center header */
-      gap: 1rem; /* Space between logo & text */
+      justify-content: center;
+      gap: 1rem;
     }
     header img {
-      height: 60px; /* Fix 2: Fixed logo size */
+      height: 60px;
       width: auto;
     }
     header h1 {
       margin: 0;
       font-size: 2rem;
-      font-weight: 600; /* Fix 3: Boldness match */
+      font-weight: 600;
     }
     .section {
       padding: 2rem;
@@ -37,9 +37,9 @@
     }
     .section h2 {
       color: #000;
-      border-bottom: 2px solid yellow; /* Fix 4: Yellow underline */
+      border-bottom: 2px solid yellow;
       padding-bottom: 0.5rem;
-      font-weight: 600; /* Bold match */
+      font-weight: 600;
     }
 
     /* ▼ ADMIN-SPECIFIC STYLES ▼ */
@@ -52,7 +52,7 @@
     .admin-form label {
       display: block;
       margin: 1rem 0 0.5rem;
-      font-weight: 600; /* Match boldness */
+      font-weight: 600;
     }
     .admin-form textarea {
       width: 100%;
@@ -73,59 +73,64 @@
   </style>
 </head>
 <body>
-  <!-- ▼ MATCHING HEADER ▼ -->
   <header>
     <img src="./0d8692d9-9840-4f8d-b2a4-93cbbe0934c1.jpg" alt="The Stringer logo">
-    <h1>The Stringer</h1> <!-- Removed "Admin Panel" for consistency -->
+    <h1>The Stringer</h1>
   </header>
 
   <div class="section">
-    <h2>Admin Panel</h2> <!-- Now has yellow underline -->
+    <h2>Admin Panel</h2>
     
+    <!-- FORM WITH ADDED IDs (CRUCIAL FIX) -->
     <form class="admin-form">
-      <label>Services List</label>
-      <textarea placeholder="Enter services..."></textarea>
+      <label for="services-edit">Services List</label>
+      <textarea id="services-edit" placeholder="Example:&#10;Squash restringing - R220&#10;Tennis restringing - R250"></textarea>
       
-      <label>Products List</label>
-      <textarea placeholder="Enter products..."></textarea>
+      <label for="products-edit">Products List</label>
+      <textarea id="products-edit" placeholder="Example:&#10;Squash racquet - R950&#10;Tennis grip - R120"></textarea>
       
       <button type="submit">Save Changes</button>
     </form>
   </div>
 
-  <!-- ▼ MATCHING FOOTER ▼ -->
   <footer>
     &copy; 2025 The Stringer. All rights reserved.
   </footer>
 
+  <!-- DEBUGGED JAVASCRIPT -->
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // 1. Load saved data
-    const savedData = localStorage.getItem('theStringerAdminData');
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData);
-        document.getElementById('services-edit').value = data.services || '';
-        document.getElementById('products-edit').value = data.products || '';
-        console.log("Loaded saved data:", data); // Debug log
-      } catch (e) {
-        console.error("Error loading data:", e);
-      }
-    }
-
-    // 2. Save data
-    document.querySelector('.admin-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const data = {
-        services: document.getElementById('services-edit').value,
-        products: document.getElementById('products-edit').value,
-        timestamp: new Date().toISOString()
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Load saved data
+      const loadData = () => {
+        const saved = localStorage.getItem('theStringerData');
+        if (saved) {
+          try {
+            const data = JSON.parse(saved);
+            document.getElementById('services-edit').value = data.services || '';
+            document.getElementById('products-edit').value = data.products || '';
+            console.log('Loaded:', data);
+          } catch (e) {
+            console.error('Error loading data:', e);
+          }
+        }
       };
-      
-      localStorage.setItem('theStringerAdminData', JSON.stringify(data));
-      console.log("Saved data:", data); // Debug log
-      alert('Changes saved successfully!');
+
+      // 2. Save data
+      document.querySelector('.admin-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = {
+          services: document.getElementById('services-edit').value,
+          products: document.getElementById('products-edit').value,
+          lastSaved: new Date().toLocaleString()
+        };
+        localStorage.setItem('theStringerData', JSON.stringify(data));
+        alert(`Saved at ${data.lastSaved}`);
+        loadData(); // Verify reload
+      });
+
+      // Initial load
+      loadData();
     });
-  });
-</script>
+  </script>
+</body>
+</html>
