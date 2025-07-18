@@ -2,13 +2,20 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/img/uploads"
-public_folder: "/img/uploads"
+media_folder: "static/img/uploads"  # Stores uploaded images
+public_folder: "/img/uploads"      # Public path for images
 
 collections:
-  - name: "services"
-    label: "Services"
-    folder: "_data/services"
-    fields:
-      - { name: "title", label: "Service", widget: "string" }
-      - { name: "price", label: "Price", widget: "string" }
+  - name: "content"
+    label: "Content"
+    files:
+      - file: "index.html"
+        label: "Home Page"
+        fields:
+          - { name: "title", label: "Page Title", widget: "string", default: "The Stringer" }
+          - { name: "services", label: "Services List", widget: "markdown", 
+              default: "- Squash restringing – R220\n- Tennis restringing – R250" }
+          - { name: "products", label: "Products List", widget: "markdown",
+              default: "- New squash racquets – R950\n- Grips & accessories – R120" }
+          - { name: "gallery", label: "Gallery Images", widget: "list", 
+              field: { name: "image", label: "Image", widget: "image" } }
