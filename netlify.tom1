@@ -1,0 +1,13 @@
+[build]
+  command = "echo 'CMS build complete' && exit 0"
+  publish = "."
+
+[[plugins]]
+  package = "netlify-plugin-cms"
+  enabled = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+  force = true
