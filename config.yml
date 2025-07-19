@@ -2,18 +2,17 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "uploads"
-public_folder: "/uploads"
+media_folder: "static/img/uploads"
+public_folder: "/img/uploads"
 
 collections:
-  - name: "content"
-    label: "Website Content"
+  - name: "pages"
+    label: "Pages"
     files:
-      - label: "Services & Products"
-        name: "services"
-        file: "index.html"
+      - file: "index.html"
+        label: "Home Page"
         fields:
-          - { label: "Squash Restringing", name: "squash", widget: "string" }
-          - { label: "Tennis Restringing", name: "tennis", widget: "string" }
-          - { label: "Racquetball Restringing", name: "racquetball", widget: "string" }
-          - { label: "Frame Repair Info", name: "repair", widget: "string" }
+          - { name: "services", label: "Services", widget: "markdown",
+              default: "<ul><li>Squash restringing – R220</li><li>Tennis restringing – R250</li></ul>" }
+          - { name: "products", label: "Products", widget: "markdown",
+              default: "<ul><li>New squash racquets – R950</li></ul>" }
