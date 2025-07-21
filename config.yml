@@ -1,0 +1,19 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "content"
+    label: "Website Content"
+    files:
+      - label: "Services & Products"
+        name: "services"
+        file: "index.html"
+        fields:
+          - { label: "Squash Restringing", name: "squash", widget: "string" }
+          - { label: "Tennis Restringing", name: "tennis", widget: "string" }
+          - { label: "Racquetball Restringing", name: "racquetball", widget: "string" }
+          - { label: "Frame Repair Info", name: "repair", widget: "string" }
