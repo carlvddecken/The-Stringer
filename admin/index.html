@@ -1,12 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>The Stringer CMS</title>
-    <!-- Add Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <!-- Netlify CMS Script -->
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-  </head>
-  <body></body>
+<head>
+  <meta charset="utf-8" />
+  <title>The Stringer CMS</title>
+  <!-- Required scripts -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <!-- Error handling -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof netlifyIdentity !== 'undefined') {
+        netlifyIdentity.on('init', user => {
+          if (!user) netlifyIdentity.on('login', () => {
+            document.location.href = '/admin/';
+          });
+        });
+      } else {
+        console.error('Netlify Identity failed to load');
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Loading state -->
+  <div style="text-align: center; margin-top: 2rem;">
+    <p>Loading CMS...</p>
+    <p>If this persists, check the browser console (F12)</p>
+  </div>
+</body>
 </html>
