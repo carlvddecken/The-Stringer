@@ -1,19 +1,20 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: carlvddecken/The-Stringer
   branch: main
 
-media_folder: "uploads"
-public_folder: "/uploads"
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 collections:
-  - name: "content"
-    label: "Website Content"
+  - name: "home"
+    label: "Homepage Content"
     files:
       - label: "Services & Products"
         name: "services"
-        file: "index.html"
+        file: "content/home.md"
         fields:
-          - { label: "Squash Restringing", name: "squash", widget: "string" }
-          - { label: "Tennis Restringing", name: "tennis", widget: "string" }
-          - { label: "Racquetball Restringing", name: "racquetball", widget: "string" }
-          - { label: "Frame Repair Info", name: "repair", widget: "string" }
+          - { name: "services", label: "Services", widget: "list" }
+          - { name: "products", label: "Products", widget: "list" }
+          - { name: "gallery", label: "Gallery Image URLs", widget: "list" }
+          - { name: "contact", label: "Contact Info", widget: "markdown" }
