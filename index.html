@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Stringer</title>
     <!-- Netlify Identity Fix -->
-  <script>
-    // Handle invite tokens from email links
-    if (window.location.hash.includes('invite_token')) {
-      window.location.href = '/.netlify/identity' + window.location.hash;
-    }
-  </script>
+ <script>
+  // Handle ALL Netlify Identity tokens (invite/recovery/password)
+  const hash = window.location.hash;
+  if (hash.includes('invite_token=') || hash.includes('recovery_token=') || hash.includes('token=')) {
+    window.location.href = '/.netlify/identity' + hash;
+  }
+</script>
   <style>
     body {
       margin: 0;
