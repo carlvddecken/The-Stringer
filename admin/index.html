@@ -2,30 +2,36 @@
 <html>
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Stringer CMS</title>
-  <!-- Required scripts -->
+  <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-  <!-- Error handling -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof netlifyIdentity !== 'undefined') {
-        netlifyIdentity.on('init', user => {
-          if (!user) netlifyIdentity.on('login', () => {
-            document.location.href = '/admin/';
-          });
-        });
-      } else {
-        console.error('Netlify Identity failed to load');
-      }
-    });
-  </script>
 </head>
 <body>
-  <!-- Loading state -->
-  <div style="text-align: center; margin-top: 2rem;">
-    <p>Loading CMS...</p>
-    <p>If this persists, check the browser console (F12)</p>
-  </div>
+  <!-- REQUIRED: CMS Mount Point -->
+  <div id="nc-root"></div>
+
+  <!-- Netlify CMS Script -->
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+
+  <!-- Improved Error Handling -->
+  <script>
+    setTimeout(function() {
+      if (!window.CMS) {
+        document.getElementById('nc-root').innerHTML = `
+          <div style="text-align: center; margin: 2rem; color: red;">
+            <h2>CMS Failed to Load</h2>
+            <p>Check the browser console (F12) for errors.</p>
+            <p>Common issues:</p>
+            <ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+              <li>Netlify Identity not enabled</li>
+              <li>Content Security Policy blocking scripts</li>
+              <li>Invalid config.yml</li>
+            </ul>
+          </div>
+        `;
+      }
+    }, 3000); // Show error after 3 seconds if CMS doesn't load
+  </script>
 </body>
 </html>
