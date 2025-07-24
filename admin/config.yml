@@ -2,10 +2,6 @@ backend:
   name: github
   repo: carlvddecken/The-Stringer
   branch: main
-  auth_scope: repo
-  base_url: https://api.netlify.com
-  auth_endpoint: oauth2/authorize
-  app_id: Ov23li3DZuF3lYFcFiUW
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
@@ -22,4 +18,3 @@ collections:
           - { name: "products", label: "Products", widget: "list" }
           - { name: "gallery", label: "Gallery Image URLs", widget: "list" }
           - { name: "contact", label: "Contact Info", widget: "markdown" }
-
