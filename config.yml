@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: carlvddecken/The-Stringer
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "home"
+    label: "Homepage Content"
+    files:
+      - label: "Services & Products"
+        name: "services"
+        file: "content/home.md"
+        fields:
+          - { name: "services", label: "Services", widget: "list" }
+          - { name: "products", label: "Products", widget: "list" }
+          - { name: "gallery", label: "Gallery Image URLs", widget: "list" }
+          - { name: "contact", label: "Contact Info", widget: "markdown" }
