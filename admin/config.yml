@@ -1,9 +1,8 @@
 backend:
   name: git-gateway
-  repo: carlvddecken/The-Stringer
   branch: main
 
-media_folder: "images/uploads"
+media_folder: "static/images/uploads"  # Better to use 'static/' for most frameworks
 public_folder: "/images/uploads"
 
 collections:
@@ -12,7 +11,7 @@ collections:
     files:
       - label: "Services & Products"
         name: "services"
-        file: "content/home.md"
+        file: "content/home.md"  # Must exist in your repo!
         fields:
           - { name: "services", label: "Services", widget: "list" }
           - { name: "products", label: "Products", widget: "list" }
