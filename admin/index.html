@@ -2,15 +2,38 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Content Manager</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/netlify-cms@^3.0.0/dist/netlify-cms.js"></script>
+  <title>CMS Loading...</title>
+  <script>
+  // DEBUGGING - Will show us exactly where it fails
+  console.log("Starting CMS load...");
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM loaded - injecting scripts");
+    
+    // 1. Load Identity
+    const identityScript = document.createElement('script');
+    identityScript.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+    document.head.appendChild(identityScript);
+    
+    // 2. Load CMS after Identity is ready
+    identityScript.onload = function() {
+      console.log("Identity loaded - loading CMS");
+      const cmsScript = document.createElement('script');
+      cmsScript.src = 'https://unpkg.com/netlify-cms@^3.0.0/dist/netlify-cms.js';
+      document.head.appendChild(cmsScript);
+      
+      cmsScript.onload = function() {
+        console.log("CMS loaded successfully!");
+        if(window.CMS) {
+          CMS.init();
+        }
+      };
+    };
+  });
+  </script>
 </head>
 <body>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('Netlify CMS is loading...');
-    });
-  </script>
+  <div style="padding: 2rem; text-align: center;">
+    Loading CMS... Check browser console (F12) for details.
+  </div>
 </body>
 </html>
