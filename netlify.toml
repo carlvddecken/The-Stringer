@@ -1,7 +1,14 @@
-[build]
+build]
   publish = "."
-  command = "echo 'No build needed'"
+  command = "echo 'No build command needed for static site'"
 
-# DISABLE post-processing
+# Disable problematic post-processing
 [context.production.environment]
   NETLIFY_POST_PROCESSING = "false"
+
+# Ensure admin files are served correctly
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Cache-Control = "no-cache"
+    NETLIFY_POST_PROCESSING = "false"
