@@ -31,6 +31,17 @@
   });
   </script>
 </head>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.CMS) {
+      console.log('Initializing CMS...');
+      CMS.init();
+      CMS.registerPreviewStyle('/admin/cms.css'); // Optional for styling
+    } else {
+      console.error('CMS object not found!');
+    }
+  });
+</script>
 <body>
   <div style="padding: 2rem; text-align: center;">
     Loading CMS... Check browser console (F12) for details.
