@@ -3,122 +3,67 @@
 <head>
   <meta charset="utf-8">
   <title>Content Manager</title>
+  <!-- Self-hosted CMS files -->
+  <script src="/admin/netlify-cms.js"></script>
+  <!-- Optional: Add styles if downloaded -->
+  <link rel="stylesheet" href="/admin/netlify-cms.css">
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, sans-serif;
       padding: 2rem;
       text-align: center;
-      background: #f5f7fa;
     }
     #status {
       max-width: 400px;
       margin: 3rem auto;
       padding: 2rem;
-      background: white;
+      background: #fff;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .error {
-      color: #d33;
-      margin-top: 1rem;
-    }
+    .error { color: #d33; }
   </style>
 </head>
 <body>
   <div id="status">
     <h2>Loading Content Manager</h2>
-    <div id="progress"></div>
-    <div id="error" class="error"></div>
+    <p id="message">Initializing...</p>
   </div>
 
   <script>
-  // Configuration
-  const CDNS = [
-    'https://cdn.jsdelivr.net/npm/netlify-cms@^3.0.0/dist/netlify-cms.js',
-    'https://unpkg.com/netlify-cms@^3.0.0/dist/netlify-cms.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/netlify-cms/3.0.0/netlify-cms.js'
-  ];
-
-  // State tracking
-  const state = {
-    loaded: false,
-    attempts: 0,
-    maxAttempts: CDNS.length
-  };
-
-  // UI Updates
-  function updateStatus(message, isError = false) {
-    document.getElementById('progress').innerHTML = message;
-    if (isError) {
-      document.getElementById('error').innerHTML = message;
-    }
-  }
-
-  // Load Identity
-  function loadIdentity() {
-    return new Promise((resolve) => {
-      updateStatus('Loading Identity...');
-      const script = document.createElement('script');
-      script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-      script.onload = () => {
-        updateStatus('✓ Identity loaded');
-        resolve();
-      };
-      script.onerror = () => {
-        updateStatus('⚠ Identity failed (will continue)', true);
-        resolve(); // CMS can work without Identity
-      };
-      document.head.appendChild(script);
-    });
-  }
-
-  // Attempt to load CMS from different CDNs
-  function loadCMS(attempt = 0) {
-    state.attempts++;
-    updateStatus(`Loading CMS (attempt ${state.attempts}/${state.maxAttempts})...`);
-    
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = CDNS[attempt];
-      
-      script.onload = () => {
-        state.loaded = true;
-        updateStatus('✓ CMS loaded successfully');
-        initializeCMS();
-        resolve();
-      };
-      
-      script.onerror = () => {
-        if (attempt < CDNS.length - 1) {
-          setTimeout(() => loadCMS(attempt + 1), 1000);
-        } else {
-          updateStatus('❌ All CMS load attempts failed', true);
-        }
-      };
-      
-      document.head.appendChild(script);
-    });
-  }
-
-  // Initialize CMS
-  function initializeCMS() {
+  // Verify CMS loaded
+  function checkCMS() {
     if (window.CMS) {
-      try {
-        CMS.init();
-        updateStatus('✅ CMS Ready!');
-        console.log('Netlify CMS initialized successfully');
-      } catch (e) {
-        updateStatus('⚠ CMS initialization failed', true);
-        console.error('CMS init error:', e);
+      document.getElementById('message').textContent = 'CMS Ready!';
+      CMS.init();
+      
+      // Optional: Add preview styles
+      if (typeof CMS.registerPreviewStyle === 'function') {
+        CMS.registerPreviewStyle('/admin/cms.css');
       }
+    } else {
+      document.getElementById('message').className = 'error';
+      document.getElementById('message').textContent = 
+        'CMS failed to load. Files might be missing.';
     }
   }
 
-  // Start the process
-  document.addEventListener('DOMContentLoaded', async () => {
-    await loadIdentity();
-    await loadCMS();
-  });
+  // Check every 500ms until loaded
+  const interval = setInterval(() => {
+    if (window.CMS) {
+      clearInterval(interval);
+      checkCMS();
+    }
+  }, 500);
+
+  // Timeout after 5 seconds
+  setTimeout(() => {
+    if (!window.CMS) {
+      clearInterval(interval);
+      document.getElementById('message').className = 'error';
+      document.getElementById('message').textContent = 
+        'CMS failed to load. Please check your admin folder files.';
+    }
+  }, 5000);
   </script>
 </body>
 </html>
