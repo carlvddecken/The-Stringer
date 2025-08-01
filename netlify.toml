@@ -2,7 +2,19 @@
   publish = "."
   command = "echo 'No build command needed for static site'"
 
-[[redirects]]
-  from = "/admin/*"
-  to = "/admin/index.html"
-  status = 200
+# Disable post-processing completely
+[context.production.environment]
+  NETLIFY_POST_PROCESSING = "false"
+
+# Remove the redirects section - it's not needed and can cause issues
+# [[redirects]]
+#   from = "/admin/*"
+#   to = "/admin/index.html"
+#   status = 200
+
+# Add these headers instead
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    NETLIFY_POST_PROCESSING = "false"
