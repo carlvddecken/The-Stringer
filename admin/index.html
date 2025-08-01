@@ -2,98 +2,132 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>CMS Loading...</title>
+  <title>Content Manager</title>
+  <!-- Preload scripts with fallbacks -->
+  <link rel="preconnect" href="https://identity.netlify.com">
+  <link rel="preconnect" href="https://unpkg.com">
   <style>
-    /* Basic loading styles */
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f9f9f9;
       margin: 0;
-      padding: 0;
-    }
-    .loading-message {
       padding: 2rem;
       text-align: center;
-      max-width: 600px;
+    }
+    #loading {
+      max-width: 500px;
       margin: 3rem auto;
+      padding: 2rem;
       background: white;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    #error {
+      color: #d33;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="loading-message">
+  <div id="loading">
     <h2>Loading Content Manager</h2>
-    <p>Please wait while we initialize the CMS...</p>
-    <p><small>Check browser console (F12) for details</small></p>
+    <p id="status">Initializing system...</p>
+    <p id="error"></p>
   </div>
 
   <script>
-  // Debugging initialization
-  console.log("Starting CMS initialization sequence...");
-  
-  // 1. First load Netlify Identity
-  const loadIdentity = () => {
-    console.log("Loading Netlify Identity...");
+  // Debug state
+  const states = {
+    loading: true,
+    identity: false,
+    cms: false
+  };
+
+  // UI updater
+  function updateStatus() {
+    document.getElementById('status').innerHTML = `
+      ${states.identity ? '✓' : '↻'} Identity Loaded<br>
+      ${states.cms ? '✓' : '↻'} CMS Loaded<br>
+      ${states.loading ? 'Initializing...' : 'Ready!'}
+    `;
+    
+    if (!states.loading && (!states.identity || !states.cms)) {
+      document.getElementById('error').style.display = 'block';
+      document.getElementById('error').innerText = 
+        `Error: ${!states.identity ? 'Identity' : 'CMS'} failed to load. Refresh or check console.`;
+    }
+  }
+
+  // 1. Load Identity
+  function loadIdentity() {
     return new Promise((resolve) => {
       const script = document.createElement('script');
       script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
       script.onload = () => {
-        console.log("Netlify Identity loaded successfully");
+        states.identity = true;
+        console.log('Identity loaded');
+        updateStatus();
         resolve();
       };
       script.onerror = () => {
-        console.error("Failed to load Netlify Identity");
-        resolve(); // Continue even if Identity fails
+        console.error('Identity failed to load');
+        updateStatus();
+        resolve();
       };
       document.head.appendChild(script);
     });
-  };
+  }
 
-  // 2. Then load Netlify CMS
-  const loadCMS = () => {
-    console.log("Loading Netlify CMS...");
+  // 2. Load CMS
+  function loadCMS() {
     return new Promise((resolve) => {
       const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@^3.0.0/dist/netlify-cms.js';
+      script.src = 'https://unpkg.com/netlify-cms@^3.0.0/dist/netlify-cms.js';
       script.onload = () => {
-        console.log("Netlify CMS loaded successfully");
+        states.cms = true;
+        console.log('CMS loaded');
+        updateStatus();
         resolve();
       };
       script.onerror = () => {
-        console.error("Failed to load Netlify CMS");
+        console.error('CMS failed to load');
+        updateStatus();
       };
       document.head.appendChild(script);
     });
-  };
+  }
 
-  // 3. Initialize everything
-  const initializeCMS = async () => {
+  // 3. Initialize CMS
+  async function init() {
     try {
       await loadIdentity();
       await loadCMS();
       
       if (window.CMS) {
-        console.log("Initializing CMS...");
+        console.log('Initializing CMS...');
         CMS.init();
         
-        // Optional: Add default styles
+        // Optional preview styles
         if (typeof CMS.registerPreviewStyle === 'function') {
           CMS.registerPreviewStyle('/admin/cms.css');
         }
         
-        console.log("CMS initialized successfully!");
+        states.loading = false;
+        updateStatus();
+        console.log('CMS ready!');
       } else {
-        console.error("CMS object not found after loading");
+        throw new Error('CMS object missing');
       }
-    } catch (error) {
-      console.error("Initialization error:", error);
+    } catch (e) {
+      console.error('Initialization failed:', e);
+      states.loading = false;
+      updateStatus();
     }
-  };
+  }
 
-  // Start the process when DOM is ready
-  document.addEventListener('DOMContentLoaded', initializeCMS);
+  // Start initialization
+  document.addEventListener('DOMContentLoaded', init);
+  updateStatus();
   </script>
 </body>
 </html>
