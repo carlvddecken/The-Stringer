@@ -3,48 +3,97 @@
 <head>
   <meta charset="utf-8">
   <title>CMS Loading...</title>
-  <script>
-  // DEBUGGING - Will show us exactly where it fails
-  console.log("Starting CMS load...");
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM loaded - injecting scripts");
-    
-    // 1. Load Identity
-    const identityScript = document.createElement('script');
-    identityScript.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-    document.head.appendChild(identityScript);
-    
-    // 2. Load CMS after Identity is ready
-    identityScript.onload = function() {
-      console.log("Identity loaded - loading CMS");
-      const cmsScript = document.createElement('script');
-      cmsScript.src = 'https://unpkg.com/netlify-cms@^3.0.0/dist/netlify-cms.js';
-      document.head.appendChild(cmsScript);
-      
-      cmsScript.onload = function() {
-        console.log("CMS loaded successfully!");
-        if(window.CMS) {
-          CMS.init();
-        }
-      };
-    };
-  });
-  </script>
-</head>
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    if (window.CMS) {
-      console.log('Initializing CMS...');
-      CMS.init();
-      CMS.registerPreviewStyle('/admin/cms.css'); // Optional for styling
-    } else {
-      console.error('CMS object not found!');
+  <style>
+    /* Basic loading styles */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
     }
-  });
-</script>
+    .loading-message {
+      padding: 2rem;
+      text-align: center;
+      max-width: 600px;
+      margin: 3rem auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
 <body>
-  <div style="padding: 2rem; text-align: center;">
-    Loading CMS... Check browser console (F12) for details.
+  <div class="loading-message">
+    <h2>Loading Content Manager</h2>
+    <p>Please wait while we initialize the CMS...</p>
+    <p><small>Check browser console (F12) for details</small></p>
   </div>
+
+  <script>
+  // Debugging initialization
+  console.log("Starting CMS initialization sequence...");
+  
+  // 1. First load Netlify Identity
+  const loadIdentity = () => {
+    console.log("Loading Netlify Identity...");
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+      script.onload = () => {
+        console.log("Netlify Identity loaded successfully");
+        resolve();
+      };
+      script.onerror = () => {
+        console.error("Failed to load Netlify Identity");
+        resolve(); // Continue even if Identity fails
+      };
+      document.head.appendChild(script);
+    });
+  };
+
+  // 2. Then load Netlify CMS
+  const loadCMS = () => {
+    console.log("Loading Netlify CMS...");
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/netlify-cms@^3.0.0/dist/netlify-cms.js';
+      script.onload = () => {
+        console.log("Netlify CMS loaded successfully");
+        resolve();
+      };
+      script.onerror = () => {
+        console.error("Failed to load Netlify CMS");
+      };
+      document.head.appendChild(script);
+    });
+  };
+
+  // 3. Initialize everything
+  const initializeCMS = async () => {
+    try {
+      await loadIdentity();
+      await loadCMS();
+      
+      if (window.CMS) {
+        console.log("Initializing CMS...");
+        CMS.init();
+        
+        // Optional: Add default styles
+        if (typeof CMS.registerPreviewStyle === 'function') {
+          CMS.registerPreviewStyle('/admin/cms.css');
+        }
+        
+        console.log("CMS initialized successfully!");
+      } else {
+        console.error("CMS object not found after loading");
+      }
+    } catch (error) {
+      console.error("Initialization error:", error);
+    }
+  };
+
+  // Start the process when DOM is ready
+  document.addEventListener('DOMContentLoaded', initializeCMS);
+  </script>
 </body>
 </html>
